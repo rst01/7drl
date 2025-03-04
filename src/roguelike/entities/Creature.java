@@ -10,10 +10,10 @@ public class Creature extends Entity {
     private int hitpoints;
     private String behaviour;
 
-    public Creature(Map<String, String> creatureData, int x, int y)
-    {
+    public Creature(Map<String, String> creatureData, int x, int y) {
         super(creatureData, x, y);
         behaviour = creatureData.get("behaviour");
+        hitpoints = 10;
     }
 
     private int getHitpoints() {
@@ -26,6 +26,11 @@ public class Creature extends Entity {
             world.removeEntity(this);
         }
     }
+
+    public boolean isDead() {
+        return hitpoints <= 0;
+    }
+
 
     public void move(World world, int dx, int dy)
     {
@@ -82,7 +87,31 @@ public class Creature extends Entity {
             }
 
         } else if (behaviour.equals("aggressive") && performAction > 98) {
-            // look for other npcs and hunt them
+            int awarenessDistance = 5;
+            Creature player = world.player;
+
+            int dx = player.getX() - this.x;
+            int dy = player.getY() - this.y;
+            double distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance <= awarenessDistance) {
+                int stepX = 0;
+                int stepY = 0;
+
+                    if (dx > 0) {
+                    stepX = 1;
+                } else if (dx < 0) {
+                    stepX = -1;
+                }
+
+                if (dy > 0) {
+                    stepY = 1;
+                } else if (dy < 0) {
+                    stepY = -1;
+                }
+
+                move(world, stepX, stepY);
+            }
         }
 
     }

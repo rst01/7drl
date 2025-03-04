@@ -22,10 +22,9 @@ public class WorldBuilder {
         this.creatures = new HashSet<Creature>();
     }
 
-    public WorldBuilder load(String file) {
-        // Loads map from file
-        return this;
-    }
+//    public WorldBuilder load(String file) {
+//        return this;
+//    }
 
     public Tile createTile(String type, int x, int y) {
         return new Tile(tileData.get(type), x, y);
@@ -44,27 +43,6 @@ public class WorldBuilder {
         return this;
     }
 
-    public WorldBuilder addBorders() {
-        for (int x=0; x<width; x++) {
-            tiles[x][0] = createTile("wall", x, 0);
-            tiles[x][height-1] = createTile("wall", x, height-1);
-        }
-
-        for (int y=0; y<height; y++) {
-            tiles[0][y] = createTile("wall", 0, y);
-            tiles[width-1][y] = createTile("wall", width-1, y);
-        }
-        return this;
-    }
-
-    public WorldBuilder carveOutRoom(int topX, int topY, int width, int height) {
-        for (int x=topX; x < topX+width; x++) {
-            for (int y=topY; y < topY+height; y++) {
-                tiles[x][y] = createTile("ground", x, y);
-            }
-        }
-        return this;
-    }
 
     public WorldBuilder populateWorld(int nrOfCreatures) {
         Random rnd = new Random();
@@ -95,6 +73,7 @@ public class WorldBuilder {
         int x = startX;
         int y = startY;
 
+        //drunkard's walk
         for (int i=0; i<length; i++) {
             direction = rnd.nextInt(4);
             if (direction == 0 && (x+1) < (width-1)) {
@@ -112,6 +91,9 @@ public class WorldBuilder {
 
         return this;
     }
+
+
+
 
     public World build() {
         return new World(tiles, creatures);

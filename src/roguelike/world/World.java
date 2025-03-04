@@ -72,8 +72,10 @@ public class World {
     }
 
     public void update() {
-        creatures.stream()
-                .filter(creature -> creature.getType() != "player")
+        //copy to avoid conc mod
+        Set<Creature> creaturesCopy = new HashSet<>(creatures);
+        creaturesCopy.stream()
+                .filter(creature -> !creature.getType().equals("player"))
                 .forEach(creature -> creature.update(this));
     }
 
