@@ -149,10 +149,10 @@ public class Game {
         }
     }
 
-    public void processInput() {
-        InputEvent event = ui.getNextInput();
+
+    public void processInput(InputEvent event) {
         if (event instanceof KeyEvent) {
-            KeyEvent keypress = (KeyEvent)event;
+            KeyEvent keypress = (KeyEvent) event;
             switch (keypress.getKeyCode()){
                 case KeyEvent.VK_LEFT:
                     player.move(world, -1, 0);
@@ -182,23 +182,23 @@ public class Game {
     public void run() {
         startMenu();
         isRunning = true;
-        while(isRunning) {
-            long startTime = System.nanoTime();
-            processInput();
-            update();
-            render();
-            if (player.isDead()) {
-                isRunning = false;
-                break;
-            }
-            long endTime = System.nanoTime();
-            long sleepTime = timePerLoop - (endTime - startTime);
-            if (sleepTime > 0) {
+        while (isRunning) {
+
+            InputEvent event = null;
+            while ((event = ui.getNextInput()) == null) {
                 try {
-                    Thread.sleep(sleepTime / 1000000);
+                    Thread.sleep(30);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+            }
+            processInput(event);
+            update();
+            render();
+
+
+            if (player.isDead()) {
+                isRunning = false;
             }
         }
 
@@ -208,13 +208,13 @@ public class Game {
     private void gameOverScreen() {
         GamePanel panel = ui.getGamePanel();
         panel.setGameOver(true);
-
         ui.refresh();
 
-        // Drain any existing input events
+        // Drain any existing input events.
         while (ui.getNextInput() != null) {
         }
 
+        // Wait for a new input to exit.
         while (ui.getNextInput() == null) {
             try {
                 Thread.sleep(100);
@@ -222,12 +222,11 @@ public class Game {
                 e.printStackTrace();
             }
         }
-
         System.exit(0);
     }
 
     public static void main(String[] args) {
-        Game game = new Game(120, 40);
+        Game game = new Game(120, 80);
         game.run();
     }
 
@@ -235,9 +234,9 @@ public class Game {
         Color color;
         try {
             java.lang.reflect.Field field = Color.class.getField(colorString);
-            color = (Color)field.get(null);
+            color = (Color) field.get(null);
         } catch (Exception e) {
-            color = null; // Not defined
+            color = null;
         }
         return color;
     }

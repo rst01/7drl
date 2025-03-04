@@ -29,6 +29,13 @@ public class GamePanel extends JPanel {
         repaint();
     }
 
+    //prevent flickering
+    @Override
+    public void update(Graphics g) {
+        paint(g);
+    }
+
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -39,7 +46,6 @@ public class GamePanel extends JPanel {
                 int centerX = getWidth() / 2;
                 int centerY = getHeight() / 2;
 
-                //
                 offsetX = centerX - (world.player.getX() * 16);
                 offsetY = centerY - ((world.player.getY() + 1) * 16);
             }

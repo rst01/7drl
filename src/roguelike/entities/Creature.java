@@ -13,7 +13,12 @@ public class Creature extends Entity {
     public Creature(Map<String, String> creatureData, int x, int y) {
         super(creatureData, x, y);
         behaviour = creatureData.get("behaviour");
-        hitpoints = 10;
+
+        if (getType().equals("player")) {
+            hitpoints = 100;
+        } else {
+            hitpoints = 10;  // default mob hitpoints
+        }
     }
 
     private int getHitpoints() {
@@ -31,11 +36,8 @@ public class Creature extends Entity {
         return hitpoints <= 0;
     }
 
-
-    public void move(World world, int dx, int dy)
-    {
-        if (world.isBlocked(x + dx, y + dy) != true)
-        {
+    public void move(World world, int dx, int dy) {
+        if (!world.isBlocked(x + dx, y + dy)) {
             x += dx;
             y += dy;
         } else {
@@ -50,7 +52,7 @@ public class Creature extends Entity {
     }
 
     public void useItem(Item item) {
-        if (item.getEffect() == "health" && hitpoints <= 90) {
+        if (item.getEffect().equals("health") && hitpoints <= 90) {
             hitpoints += 10;
         }
     }
@@ -62,57 +64,41 @@ public class Creature extends Entity {
         }
     }
 
-    public void moveTo(World world, int x, int y)
-    {
+    public void moveTo(World world, int x, int y) {
         //
     }
 
-    public void update(World world)
-    {
-        Random rnd = new Random();
-        int performAction = rnd.nextInt(100);
-        if (behaviour.equals("docile") && performAction > 98) {
-            // walk around and flee if attacked
-
-            int rndNr = rnd.nextInt(3);
-
-            if (rndNr == 0) {
-                move(world, 1, 0);
-            } else if (rndNr == 1) {
-                move(world, -1, 0);
-            } else if (rndNr == 2) {
-                move(world, 0, 1);
-            } else if (rndNr == 3) {
-                move(world, 0, -1);
+    public void update(World world) {
+        if (behaviour.equals("docile")) {
+            Random rnd = new Random();
+            int performAction = rnd.nextInt(100);
+            if (performAction > 80) { // low chance to move
+                int rndNr = rnd.nextInt(4);
+                if (rndNr == 0) {
+                    move(world, 1, 0);
+                } else if (rndNr == 1) {
+                    move(world, -1, 0);
+                } else if (rndNr == 2) {
+                    move(world, 0, 1);
+                } else if (rndNr == 3) {
+                    move(world, 0, -1);
+                }
             }
-
-        } else if (behaviour.equals("aggressive") && performAction > 98) {
+        } else if (behaviour.equals("aggressive")) {
             int awarenessDistance = 5;
             Creature player = world.player;
-
             int dx = player.getX() - this.x;
             int dy = player.getY() - this.y;
             double distance = Math.sqrt(dx * dx + dy * dy);
-
             if (distance <= awarenessDistance) {
-                int stepX = 0;
-                int stepY = 0;
-
-                    if (dx > 0) {
-                    stepX = 1;
-                } else if (dx < 0) {
-                    stepX = -1;
+                if (distance <= 1.0) {
+                    attackCreature(player, world);
+                } else {
+                    int stepX = (dx == 0) ? 0 : dx / Math.abs(dx);
+                    int stepY = (dy == 0) ? 0 : dy / Math.abs(dy);
+                    move(world, stepX, stepY);
                 }
-
-                if (dy > 0) {
-                    stepY = 1;
-                } else if (dy < 0) {
-                    stepY = -1;
-                }
-
-                move(world, stepX, stepY);
             }
         }
-
     }
 }
