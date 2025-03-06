@@ -132,7 +132,7 @@ public class Game {
                 int artX = (panel.getWidth() - g.getFontMetrics().stringWidth(art[i])) / 2;
                 g.drawString(art[i], artX, artStartY + (i + 1) * 16);
             }
-            String title = "A slartibarti game";
+            String title = "slartibarti game";
             int titleX = (panel.getWidth() - g.getFontMetrics().stringWidth(title)) / 2;
             g.drawString(title, titleX, artStartY + art.length * 16 + 20);
             String prompt = "Press any key to start";
