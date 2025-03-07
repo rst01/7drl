@@ -90,40 +90,11 @@ public class Game {
         if (g != null) {
             g.setFont(new Font("Monospaced", Font.PLAIN, 16));
 
-            g.setColor(Color.black);
+            g.setColor(Color.black); 
             g.fillRect(0, 0, panel.getWidth(), panel.getHeight());
 
             String[] art = {
-                    "                                                                                                                    ",
-                    "                                                                                                                    ",
-                    "                                                                                                                    ",
-                    "               :                    +.                                                                              ",
-                    "              .@@@*                  @@%.                                                          .@@.             ",
-                    "              @@@@*                   @@@@                         :@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%            ",
-                    "             :@@@=                     @@@+                                                     .@@@@@@@*           ",
-                    "             @@@*                      -@%       :@@=                                         .@@@@=                ",
-                    "            =@@@        .@% =@@@@@@@@@@@@@@@@@@@@@@@@@-                                     -@@@-                   ",
-                    "            @@@@@@@@@@@@@@@@* .                                                           *@@+                      ",
-                    "           #@@-        +@@@:      @@:       .                                      .@.  @@+                         ",
-                    "          :@@-        -@@.       @@@@@:      %@*                                   .@@@@.                           ",
-                    "          @@-        .@%        @@@@           @@@=                                .@@@@#                           ",
-                    "         @@.   @@+   @-        @@@-             :@@@@.                             .@@@-                *@          ",
-                    "        @@     @@@@          .@@@            :    @@@@%                             @@@-              =@@@@#        ",
-                    "       @*      @@@          #@@. *#          @@@@: *@@@      +@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-      ",
-                    "      ..       @@@        .@@.    @-        +@@@.   :@+                             @@@-                            ",
-                    "               @@@       *@       +@        @@@:                                    @@@-                            ",
-                    "               @@@                 @@      @@@%                                     @@@-                            ",
-                    "               @@@                 :@@    :@@@                                      @@@-                            ",
-                    "               @@@                  =@@  :@@@                                       @@@-                            ",
-                    "               @@@        *#         #@@-@@@                                        @@@-                            ",
-                    "               @@@     .@@:           @@@@@                                         @@@-                            ",
-                    "               @@@   *@@-             @@@@@                                         @@@-                            ",
-                    "               @@@:@@@+             %@@@-@@@@                                       @@@-                            ",
-                    "               @@@@@%             @@@*    =@@@@:                                    @@@-                            ",
-                    "              %@@@@.           +@@@:        *@@@@@=.                      .@@#*+=--#@@@-                            ",
-                    "               .@#          *@@#.             =@@@@@@@@#                     -@@@@@@@@@                             ",
-                    "                        :@@%.                    %@@@:                          .@@@@+                              ",
-                    "                      .-                                                         :+                              "
+
             };
 
             int artStartY = 20;
@@ -132,7 +103,7 @@ public class Game {
                 int artX = (panel.getWidth() - g.getFontMetrics().stringWidth(art[i])) / 2;
                 g.drawString(art[i], artX, artStartY + (i + 1) * 16);
             }
-            String title = "slartibarti game";
+            String title = "";
             int titleX = (panel.getWidth() - g.getFontMetrics().stringWidth(title)) / 2;
             g.drawString(title, titleX, artStartY + art.length * 16 + 20);
             String prompt = "Press any key to start";
